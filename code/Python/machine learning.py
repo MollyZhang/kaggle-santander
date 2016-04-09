@@ -8,13 +8,18 @@ CLASSIFIERS = {"LR": linear_model.LogisticRegression(),
 
 
 def main():
+
+    print "data loading"
     df = pd.read_csv("../../data/train.csv")
     data, label = data_label_split(df)
     # data = data[['var38', 'var15']]
     x_train, x_test, y_train, y_test = cross_validation.train_test_split(
-        data, label, test_size=0.2, random_state=0)
+        data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
+
+    print "training and prediction"
+
     result_df = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
-    print result_df
+    print result_df.mean
 
 
 
