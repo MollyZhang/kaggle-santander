@@ -4,6 +4,8 @@ import datetime
 from sklearn import cross_validation, linear_model, metrics, tree, ensemble, neighbors
 import plotting
 
+THRESHHOLD = 0.08
+
 
 CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
                #"Dtree": tree.DecisionTreeClassifier(max_depth=20),
@@ -18,9 +20,9 @@ def main():
     data, label = data_label_split(df)
     x_train, x_test, y_train, y_test = cross_validation.train_test_split(
         data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
-    # generate_submission(data, label)
-    threshhold_result = cut_off_threshhold(CLASSIFIERS['linear'], x_train, y_train)
-    plotting.plot_cutting_off(threshhold_result)
+    generate_submission(data, label)
+
+
 
 def cut_off_threshhold(clf, x_train, y_train):
     x_tr, x_val, y_tr, y_val = cross_validation.train_test_split(
@@ -37,6 +39,8 @@ def cut_off_threshhold(clf, x_train, y_train):
         auc_train = metrics.roc_auc_score(y_tr, p_train)
         row_list.append({'threshhold': threshhold, 'train auc': auc_train, 'validation auc': auc_val})
     result_df = pd.DataFrame(row_list)
+    # plotting.plot_cutting_off(threshhold_result)
+    # print max(threshhold_result['validation auc'])
     return result_df
 
 def generate_submission(data, label):
@@ -44,7 +48,7 @@ def generate_submission(data, label):
     df_test = pd.read_csv("../../data/test.csv")
     df_test['bias'] = pd.Series(np.ones(len(df_test.index)), index=df_test.index)
     clf.fit(data, label)
-    prediction = clf.predict(df_test) >= 0.5
+    prediction = clf.predict(df_test) >= THRESHHOLD
     df_submit = pd.DataFrame()
     df_submit['ID'] = df_test['ID']
     df_submit['TARGET'] = pd.Series(prediction, index=df_test.index)

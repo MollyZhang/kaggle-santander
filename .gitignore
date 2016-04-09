@@ -1,3 +1,4 @@
+data/
 *.RData
 .DS_Store
 *.idea
