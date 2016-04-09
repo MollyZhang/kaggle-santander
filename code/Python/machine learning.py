@@ -29,10 +29,11 @@ def generate_submission(data, label):
     df_test = pd.read_csv("../../data/test.csv")
     df_test['bias'] = pd.Series(np.ones(len(df_test.index)), index=df_test.index)
     clf.fit(data, label)
-    prediction = clf.predict(df_test)
+    prediction = clf.predict(df_test) >= 0.5
     df_submit = pd.DataFrame()
     df_submit['ID'] = df_test['ID']
     df_submit['TARGET'] = pd.Series(prediction, index=df_test.index)
+    df_submit['TARGET'] = df_submit['TARGET'].astype(int)
     time = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M")
     df_submit.to_csv("../../result/submission_{0}.csv".format(time), index=False)
 
