@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import datetime
+
+
 from sklearn import cross_validation, linear_model, metrics, tree, ensemble, neighbors
 
 
@@ -9,21 +12,29 @@ CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
                # "rbf SVM": SVM.SVC(kernel="rbf"),
                # "linear SVM": SVM.SVC(kernel="linear"),
                #"KNN": neighbors.KNeighborsClassifier(),
-               "linear": linear_model.LinearRegression()}
+               "linear": linear_model.LinearRegression(normalize=True)}
 
 def main():
-
-    print "data loading....."
     df = pd.read_csv("../../data/train.csv")
     data, label = data_label_split(df)
-    # data = data[['var38', 'var15']]
     x_train, x_test, y_train, y_test = cross_validation.train_test_split(
         data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
 
-    print "training and prediction....."
+    generate_submission(data, label)
 
-    result_df = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
-    print result_df.mean()
+
+
+def generate_submission(data, label):
+    clf = CLASSIFIERS['linear']
+    df_test = pd.read_csv("../../data/test.csv")
+    df_test['bias'] = pd.Series(np.ones(len(df_test.index)), index=df_test.index)
+    clf.fit(data, label)
+    prediction = clf.predict(df_test)
+    df_submit = pd.DataFrame()
+    df_submit['ID'] = df_test['ID']
+    df_submit['TARGET'] = pd.Series(prediction, index=df_test.index)
+    time = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M")
+    df_submit.to_csv("../../result/submission_{0}.csv".format(time), index=False)
 
 
 def tenfold_cross_validation(x_train, y_train, classifiers):
