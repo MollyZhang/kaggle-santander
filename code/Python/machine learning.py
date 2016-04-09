@@ -1,9 +1,8 @@
 import pandas as pd
 import numpy as np
 import datetime
-
-
 from sklearn import cross_validation, linear_model, metrics, tree, ensemble, neighbors
+import plotting
 
 
 CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
@@ -19,10 +18,28 @@ def main():
     data, label = data_label_split(df)
     x_train, x_test, y_train, y_test = cross_validation.train_test_split(
         data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
+    # generate_submission(data, label)
+    print cut_off_threshhold(CLASSIFIERS['linear'], x_train, y_train)
 
-    generate_submission(data, label)
 
 
+
+def cut_off_threshhold(clf, x_train, y_train):
+    x_tr, x_val, y_tr, y_val = cross_validation.train_test_split(
+        x_train, y_train, test_size=0.3, train_size=0.7, random_state=0, stratify=y_train)
+    clf.fit(x_tr, y_tr)
+    prediction_val = clf.predict(x_val)
+    prediction_train = clf.predict(x_tr)
+
+    row_list = []
+    for threshhold in np.linspace(0.01, 0.99, num=100, endpoint=True):
+        p_val = pd.Series(prediction_val >= threshhold).astype(int)
+        p_train = pd.Series(prediction_train >= threshhold).astype(int)
+        auc_val = metrics.roc_auc_score(y_val, p_val)
+        auc_train = metrics.roc_auc_score(y_tr, p_train)
+        row_list.append({'threshhold': threshhold, 'train auc': auc_train, 'validation auc': auc_val})
+    result_df = pd.DataFrame(row_list)
+    return result_df
 
 def generate_submission(data, label):
     clf = CLASSIFIERS['linear']
