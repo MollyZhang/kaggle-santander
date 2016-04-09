@@ -1,12 +1,15 @@
 import pandas as pd
 import numpy as np
-from sklearn import cross_validation, linear_model, metrics, tree, ensemble
+from sklearn import cross_validation, linear_model, metrics, tree, ensemble, neighbors
 
 
 CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
-               "Dtree": tree.DecisionTreeClassifier(max_depth=20),
-               "Forest": ensemble.RandomForestClassifier()}
-
+               #"Dtree": tree.DecisionTreeClassifier(max_depth=20),
+               #"Forest": ensemble.RandomForestClassifier(),
+               # "rbf SVM": SVM.SVC(kernel="rbf"),
+               # "linear SVM": SVM.SVC(kernel="linear"),
+               #"KNN": neighbors.KNeighborsClassifier(),
+               "linear": linear_model.LinearRegression()}
 
 def main():
 
@@ -28,6 +31,7 @@ def tenfold_cross_validation(x_train, y_train, classifiers):
     foldnum = 0
     for train, val in cross_validation.StratifiedKFold(y_train, shuffle=True, n_folds=3, random_state=0):
         foldnum += 1
+        print "fold %d...." %foldnum
         [tr_data, val_data, tr_targets, val_targets] = folds_to_split(x_train, y_train, train, val)
         tr_targets = tr_targets.as_matrix().ravel()
         val_targets = val_targets.as_matrix().ravel()
