@@ -19,10 +19,8 @@ def main():
     x_train, x_test, y_train, y_test = cross_validation.train_test_split(
         data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
     # generate_submission(data, label)
-    print cut_off_threshhold(CLASSIFIERS['linear'], x_train, y_train)
-
-
-
+    threshhold_result = cut_off_threshhold(CLASSIFIERS['linear'], x_train, y_train)
+    plotting.plot_cutting_off(threshhold_result)
 
 def cut_off_threshhold(clf, x_train, y_train):
     x_tr, x_val, y_tr, y_val = cross_validation.train_test_split(

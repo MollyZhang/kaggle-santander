@@ -7,4 +7,5 @@ def plot_cutting_off(df):
     plt.xlabel('threshhold')
     plt.ylabel('auc score')
     plt.legend(['training', 'validation'])
-
+    plt.title('determining cutoff threshhold and auc score for linear model')
+    plt.show()
