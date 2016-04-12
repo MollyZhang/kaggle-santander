@@ -16,5 +16,10 @@ df.ix[:, 0] = range(1, len(df) + 1)
 y = df.ix[:, 'TARGET']
 X = df.drop('TARGET', axis = 1)
 
+# Convert TARGET back to 0, 1 vals:
+y[y < 0] = 0
+y[y > 0] = 1
+
+
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size = 0.20, random_state = 1, stratify = y)
