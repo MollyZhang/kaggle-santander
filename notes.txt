@@ -1,3 +1,27 @@
+12 Apr 6:15 pm:
+The following variables are most strongly correlated with TARGET:
+                                                variable target.correlation
+                                               ind_var30            -0.1498
+                                     num_meses_var5_ult3            -0.1483
+                                               num_var42            -0.1357
+                                                ind_var5            -0.1353
+                                                num_var5            -0.1341
+                                                   var36             0.1029
+                                                   var15             0.1013
+                                                num_var4            -0.0802
+                                               num_var35            -0.0769
+                                              ind_var8_0             0.0467
+                                              num_var8_0             0.0466
+                                               ind_var13            -0.0396
+                                             ind_var13_0            -0.0395
+                                             ind_var12_0            -0.0382
+                                             num_var13_0            -0.0380
+                                             ind_var39_0            -0.0350
+                                                       .                  .
+                                                       .                  .
+                                                       .                  .
+
+
 All of the following variables can be removed as they have no information
 content (see explore.R lines 9 - 89 for details):
 
