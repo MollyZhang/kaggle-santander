@@ -217,3 +217,22 @@ load(file = '~/kaggle/santander/data/modlog.rda')
 summary(mod.log)
 max(summary(mod.log)$coef[, 4], na.rm = T)
 # IN TESTING: remember that all colinear variables were reduced to a single variable.  Check to see if the colinearity persists in the test data, if not, some kind of consensus should be done
+
+
+
+
+
+
+# Find which variables correlate best with TARGET
+names(data)
+
+target.cors <- data.frame(variable = names(data)[-236], 
+						  target.correlation = numeric(235))
+head(target.cors)
+
+for (v in 1:235) {
+  var <- as.character(target.cors$variable[v])
+  target.cors$target.correlation[v] <- round(cor(data[, var], data$TARGET), 4)
+}
+
+target.cors[order(abs(target.cors$target.correlation), decreasing = T), ]
