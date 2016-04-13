@@ -1,3 +1,11 @@
+13 Apr 1:00 pm:
+There are apparent non-linear relationships between the following pairs of variables (only tested the top 16 most correlated with TARGET--see explore.R 244 -262 for details):
+      ind_var5:num_var4, ind_var5:num_var35
+      num_var4:num_var5, num_var4:num_meses_var5_ult3
+      num_var5:num_var35
+      num_var35:num_meses_var5_ult3
+
+
 12 Apr 6:15 pm:
 The following variables are most strongly correlated with TARGET:
                                                 variable target.correlation
