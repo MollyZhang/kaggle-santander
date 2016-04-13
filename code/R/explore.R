@@ -235,4 +235,28 @@ for (v in 1:235) {
   target.cors$target.correlation[v] <- round(cor(data[, var], data$TARGET), 4)
 }
 
-target.cors[order(abs(target.cors$target.correlation), decreasing = T), ]
+target.cors <- target.cors[order(abs(target.cors$target.correlation), 
+								 decreasing = T), ]
+head(target.cors)
+
+
+# Explore possible nonlinear relationships among these variables
+targ.vars <- target.cors$variable[1:16]
+
+ind <- which(names(data) %in% targ.vars)
+pairs(data[, ind], panel = panel.smooth)
+
+# Clear nonlinearity in:
+# ind_var5:num_var4, ind_var5:num_var35
+# num_var4:num_var5, num_var4:num_meses_var5_ult3
+# num_var5:num_var35
+# num_var35:num_meses_var5_ult3
+
+# And check against TARGET
+par(mfrow = c(4, 4))
+par(mar = c(4, 0, 0, 0))
+
+for (i in ind) {
+  plot(data$TARGET ~ data[, i], xlab = names(data)[i])
+  lines(lowess(data$TARGET ~ data[, i]), col = 2)
+}
