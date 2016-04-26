@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import datetime
+import pickle
+
 from sklearn import cross_validation, linear_model, svm, metrics, tree, ensemble, neighbors
 from sklearn.preprocessing import MinMaxScaler
 import xgboost as xgb
@@ -15,7 +17,7 @@ CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
                #"rbf SVM": svm.SVC(kernel="rbf"),
                # "linear SVM": SVM.SVC(kernel="linear"),
                #"KNN": neighbors.KNeighborsClassifier(),
-               "xgboost": xgb.XGBClassifier(n_estimators=50),
+               "xgboost": xgb.XGBClassifier(n_estimators=20),
                }
 
 def main():
@@ -23,10 +25,10 @@ def main():
     data, label = data_label_split(df)
     x_train, x_test, y_train, y_test = cross_validation.train_test_split(
         data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
-    #learning_curve(CLASSIFIERS, x_train, y_train)
+    learning_curve(CLASSIFIERS, data, label)
 
-    result = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
-    print result
+    # result = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
+    # print result
     #generate_submission(data, label)
 
 def tenfold_cross_validation(x_train, y_train, classifiers):
@@ -48,28 +50,31 @@ def tenfold_cross_validation(x_train, y_train, classifiers):
             result_df.loc[foldnum, "clf={0} val".format(clf_name)] = auc_val
     return result_df
 
-def learning_curve(clf, x_train, y_train):
+def learning_curve(classifiers, data, label):
     x_tr, x_val, y_tr, y_val = cross_validation.train_test_split(
-        x_train, y_train, test_size=0.2, train_size=0.8, stratify=y_train)
+        data, label, test_size=0.2, train_size=0.8, random_state=20160426, stratify=label)
     num_samples = x_tr.shape[0]
-    step = 100
-    total_samples = 100
+    step = 5000
+    total_samples = 1000
+    result_df = pd.DataFrame()
     while total_samples <= num_samples:
-        this_x_tr = x_tr.iloc[:100, :]
-        print this_x_tr
-        break
+        print total_samples
+        clf = classifiers['xgboost']
+        this_x_tr = x_tr.iloc[:total_samples,:]
+        this_y_tr = y_tr.iloc[:total_samples]
 
+        clf.fit(this_x_tr, this_y_tr, eval_metric='auc')
+        predictions_train = clf.predict_proba(this_x_tr)[:,1]
+        predictions_val = clf.predict_proba(x_val)[:,1]
+        auc_train = metrics.roc_auc_score(this_y_tr, predictions_train)
+        auc_val = metrics.roc_auc_score(y_val, predictions_val)
+        result_df.loc[total_samples, "train"] = auc_train
+        result_df.loc[total_samples, "val"] = auc_val
         total_samples += step
-
-
-
-
-
-
-
-
-
-
+    print result_df
+    f = open('pickle_dumps', "w")
+    f.write(pickle.dumps(result_df))
+    f.close()
 
 
 def cut_off_threshhold(clf, x_train, y_train):
