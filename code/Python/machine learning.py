@@ -17,7 +17,7 @@ CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
                #"rbf SVM": svm.SVC(kernel="rbf"),
                # "linear SVM": SVM.SVC(kernel="linear"),
                #"KNN": neighbors.KNeighborsClassifier(),
-               "xgboost": xgb.XGBClassifier(n_estimators=20),
+               "xgboost": xgb.XGBClassifier(n_estimators=50),
                }
 
 def main():
@@ -34,7 +34,7 @@ def main():
 def tenfold_cross_validation(x_train, y_train, classifiers):
     result_df = pd.DataFrame()
     foldnum = 0
-    for train, val in cross_validation.StratifiedKFold(y_train, shuffle=True, n_folds=5, random_state=0):
+    for train, val in cross_validation.StratifiedKFold(y_train, shuffle=True, n_folds=1, random_state=0):
         foldnum += 1
         print "fold %d...." %foldnum
         [tr_data, val_data, tr_targets, val_targets] = folds_to_split(x_train, y_train, train, val)
