@@ -1,25 +1,18 @@
 import pandas as pd
 import numpy as np
 
-from sklearn.cross_validation import train_test_split
-from sklearn.metrics import roc_auc_score
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.feature_selection import SelectFromModel
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-
-import xgboost as xgb
-import matplotlib.pyplot as plt
 
 
 def main():
     train = pd.read_csv("../../data/train.csv")
     test = pd.read_csv("../../data/test.csv")
     train, test = remove_0_variant_features(train, test)
-    print train.shape
     train, test = remove_linearly_dependent_features(train, test)
-    print train.shape
+    train.to_csv('../../data/train_4-26.csv', index=False)
+    test.to_csv('../../data/test_4-26.csv', index=False)
 
 
 def remove_linearly_dependent_features(train, test):
@@ -45,10 +38,7 @@ def PCA_analysis(train, test):
     pca = PCA()
     X = train.drop("TARGET", axis=1)
     # feature normalization
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-    # print X_scaled.describe()
-    pca.fit(X_scaled)
+    pca.fit(X)
     components = pca.components_
     component_ratio = pca.explained_variance_ratio_
     accumulated_ratio = [sum(component_ratio[:i+1]) for i in range(len(component_ratio))]
@@ -59,8 +49,12 @@ def PCA_analysis(train, test):
     print number_of_features_to_keep
 
     pca = PCA(n_components=number_of_features_to_keep)
-    X_new = pca.fit_transform(X_scaled)
-
+    X_new = pca.fit_transform(X)
+    new_train = pd.DataFrame(data=X_new,
+                             index=range(X_new.shape[0]),
+                             columns=X.columns)
+    new_train['TARGET'] = train['TARGET']
+    return new_train
 
 
 def remove_0_variant_features(train, test):
