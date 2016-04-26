@@ -6,7 +6,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_selection import SelectFromModel
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 
 import xgboost as xgb
@@ -17,16 +17,24 @@ def main():
     train = pd.read_csv("../../data/train.csv")
     test = pd.read_csv("../../data/test.csv")
     train, test = remove_0_variant_features(train, test)
-    train, test = remove_duplicate_features(train, test)
-    PCA_analysis(train, test)
+    print train.shape
+    train, test = remove_linearly_dependent_features(train, test)
+    print train.shape
 
-def remove_duplicate_features(train, test):
+
+def remove_linearly_dependent_features(train, test):
     remove = []
     cols = train.columns
+    scaler = MinMaxScaler()
+    X_scaled = scaler.fit_transform(train)
+    train_scaled = pd.DataFrame(data=X_scaled,
+                                index=range(X_scaled.shape[0]),
+                                columns=train.columns)
+    train_scaled['TARGET'] = train['TARGET']
     for i in range(len(cols)-1):
-        v = train[cols[i]].values
+        v = train_scaled[cols[i]].values
         for j in range(i+1,len(cols)):
-            if np.array_equal(v,train[cols[j]].values):
+            if np.array_equal(v, train_scaled[cols[j]].values):
                 remove.append(cols[j])
     train.drop(remove, axis=1, inplace=True)
     test.drop(remove, axis=1, inplace=True)
@@ -35,7 +43,7 @@ def remove_duplicate_features(train, test):
 def PCA_analysis(train, test):
     variance_ratio_threshhold = 0.99
     pca = PCA()
-    X = train.drop('ID', axis=1).drop("TARGET", axis=1)
+    X = train.drop("TARGET", axis=1)
     # feature normalization
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
@@ -52,23 +60,6 @@ def PCA_analysis(train, test):
 
     pca = PCA(n_components=number_of_features_to_keep)
     X_new = pca.fit_transform(X_scaled)
-    
-
-
-
-def remove_linearly_correlated_features(train, test):
-    remove = []
-    cols = train.columns
-    for i in range(len(cols)-1):
-        v = train[cols[i]].values
-        for j in range(i+1,len(cols)):
-
-            if np.array_equal(v,train[cols[j]].values):
-                remove.append(cols[j])
-    train.drop(remove, axis=1, inplace=True)
-    test.drop(remove, axis=1, inplace=True)
-    return train, test
-
 
 
 
@@ -79,6 +70,7 @@ def remove_0_variant_features(train, test):
         if train[col].std() == 0:
             remove.append(col)
     train.drop(remove, axis=1, inplace=True)
+    train.drop('ID', axis=1, inplace=True)
     test.drop(remove, axis=1, inplace=True)
     return train, test
 
