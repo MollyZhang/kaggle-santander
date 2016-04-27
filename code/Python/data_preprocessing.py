@@ -11,8 +11,9 @@ def main():
     test = pd.read_csv("../../data/test.csv")
     train, test = remove_0_variant_features(train, test)
     train, test = remove_linearly_dependent_features(train, test)
-    train.to_csv('../../data/train_4-26.csv', index=False)
-    test.to_csv('../../data/test_4-26.csv', index=False)
+
+    # train.to_csv('../../data/train_4-26.csv', index=False)
+    # test.to_csv('../../data/test_4-26.csv', index=False)
 
 
 def remove_linearly_dependent_features(train, test):

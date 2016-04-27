@@ -4,7 +4,7 @@ import datetime
 import pickle
 
 from sklearn import cross_validation, linear_model, svm, metrics, tree, ensemble, neighbors
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import xgboost as xgb
 
 
@@ -23,13 +23,25 @@ CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
 def main():
     df = pd.read_csv("../../data/train_4-26.csv")
     data, label = data_label_split(df)
-    x_train, x_test, y_train, y_test = cross_validation.train_test_split(
-        data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
+
+    data = scaling(data)
+
+    # x_train, x_test, y_train, y_test = cross_validation.train_test_split(
+    #     data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
     learning_curve(CLASSIFIERS, data, label)
 
     # result = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
     # print result
     #generate_submission(data, label)
+
+
+def scaling(data_in):
+    scaler = StandardScaler()
+    data_out = pd.DataFrame(data=scaler.fit_transform(data_in),
+                            index=data_in.index,
+                            columns=data_in.columns)
+    return data_out
+
 
 def tenfold_cross_validation(x_train, y_train, classifiers):
     result_df = pd.DataFrame()
@@ -72,9 +84,9 @@ def learning_curve(classifiers, data, label):
         result_df.loc[total_samples, "val"] = auc_val
         total_samples += step
     print result_df
-    f = open('pickle_dumps', "w")
-    f.write(pickle.dumps(result_df))
-    f.close()
+    # f = open('pickle_dumps', "w")
+    # f.write(pickle.dumps(result_df))
+    # f.close()
 
 
 def cut_off_threshhold(clf, x_train, y_train):
