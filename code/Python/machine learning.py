@@ -25,14 +25,13 @@ def main():
     test = pd.read_csv("../../data/test_4-28.csv")
     data, label = data_label_split(df)
 
-    data = scaling(data)
 
-    # x_train, x_test, y_train, y_test = cross_validation.train_test_split(
-    #     data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
+    ##x_train, x_test, y_train, y_test = cross_validation.train_test_split(
+    #    data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
     #learning_curve(CLASSIFIERS, data, label)
 
-    # result = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
-    # print result
+    #result = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
+    #print result
     generate_submission(data, label, test)
 
 
@@ -110,21 +109,14 @@ def cut_off_threshhold(clf, x_train, y_train):
     return result_df
 
 def generate_submission(data, label, test):
-
-
     clf = CLASSIFIERS['xgboost']
     df_test_no_id = test.drop('ID', axis=1)
 
     clf.fit(data, label, eval_metric='auc')
-    train_predict = clf.predict_proba(data)[:,1]
-    train_auc = metrics.roc_auc_score(label, train_predict)
+    train_pred = clf.predict_proba(data)[:,1]
+    train_auc = metrics.roc_auc_score(label, train_pred)
 
     prediction = clf.predict_proba(df_test_no_id)[:,1]
-    for i in range(len(prediction)):
-        if prediction[i] < 0:
-            prediction[i] = 0
-        if prediction[i] > 1:
-            prediction[i] = 1
     df_submit = pd.DataFrame()
     df_submit['ID'] = test['ID']
     df_submit['TARGET'] = pd.Series(prediction, index=test.index)
