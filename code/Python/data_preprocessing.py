@@ -69,6 +69,11 @@ def feature_engineering(train, test):
                         'ind_var6_0', # almost no variance
                         'ind_var7_emit_ult1', # almost no variance
                         'num_meses_var29_ult3', #almost no variance
+                        'num_reemb_var17_hace3', # almost no variance
+                        'num_trasp_var17_in_hace3', # almost no variance
+                        'num_trasp_var17_in_ult1', # almost no variance, highly correlated
+                        'num_trasp_var33_in_hace3', #almost no variance, highly correlated
+                        'num_trasp_var33_in_ult1', #almost no variance, highly correlated
 
                         ]
     for feature_name in features_to_drop:
@@ -163,6 +168,81 @@ def feature_engineering(train, test):
                            'num_meses_var13_corto_ult3',
                            'num_meses_var13_largo_ult3',
                            'num_meses_var17_ult3',
+                           'num_meses_var33_ult3',
+                           'num_meses_var39_vig_ult3', #very nice
+                           'num_meses_var44_ult3',
+                           'num_meses_var5_ult3',
+                           'num_meses_var8_ult3',
+                           'num_op_var39_comer_ult1',
+                           'num_op_var39_comer_ult3',
+                           'num_op_var39_efect_ult1',
+                           'num_op_var39_efect_ult3',
+                           'num_op_var39_hace2',
+                           'num_op_var39_hace3',
+                           'num_op_var39_ult1',
+                           'num_op_var39_ult3',
+                           'num_op_var40_comer_ult1',
+                           'num_op_var40_comer_ult3',
+                           'num_op_var40_efect_ult1', # multiply of 3
+                           'num_op_var40_efect_ult3', # multiply of 3
+                           'num_op_var40_hace2', # multiply of 3
+                           'num_op_var40_hace3', # multiply of 3
+                           'num_op_var40_ult1', # multiply of 3
+                           'num_op_var40_ult3', # multiply of 3
+                           'num_op_var41_comer_ult1', #multiply of 3
+                           'num_op_var41_comer_ult3', # multiply of 3
+                           'num_op_var41_efect_ult1', #multiple of 3
+                           'num_op_var41_efect_ult3', # multiple of 3
+                           'num_op_var41_hace2', # multiple of 3
+                           'num_op_var41_hace3', # multiple of 3
+                           'num_op_var41_ult1', # multiple of 3
+                           'num_op_var41_ult3', # multiple of 3
+                           'num_reemb_var17_ult1', #mostly 0, multiple of 3
+                           'num_sal_var16_ult1', # multiple of 3
+                           'num_trasp_var11_ult1', # multiple of 3
+                           'num_var1', # highly correlated
+                           'num_var12', # multiple of 3
+                           'num_var12_0', # multiple of 3
+                           'num_var13', # multiple of 3
+                           'num_var13_0',
+                           'num_var13_corto',
+                           'num_var13_corto_0',
+                           'num_var13_largo',
+                           'num_var13_largo_0',
+                           'num_var14',
+                           'num_var14_0',
+                           'num_var17',
+                           'num_var17_0',
+                           'num_var1_0',
+                           'num_var22_hace2', #nice
+                           'num_var22_hace3', # nice
+                           'num_var22_ult1', # nice
+                           'num_var22_ult3', # nice
+                           'num_var24',
+                           'num_var24_0',
+                           'num_var25_0',
+                           'num_var26_0',
+                           'num_var30',
+                           'num_var30_0', # interesting, not 0 mode anymore, 3 mode
+                           'num_var31', # interesting, not 0 mode anymore, 3 mode
+                           'num_var31_0',
+                           'num_var33_0',
+                           'num_var33',
+                           'num_var313_0',
+                           'num_var35',
+                           'num_var37_0',
+                           'num_var37_med_ult2',
+                           'num_var39_0',
+                           'num_var4',
+
+
+
+
+
+
+
+
+
 
 
 
