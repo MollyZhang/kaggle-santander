@@ -56,3 +56,13 @@ MinMaxScaler
 46000  0.824804  0.819725
 51000  0.824895  0.820356
 56000  0.825184  0.819691
+
+
+
+4-28
+remove a lot more features with almost no variance or highly correlated with others
+now total number of features 247
+
+
+
+

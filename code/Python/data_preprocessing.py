@@ -10,12 +10,8 @@ def main():
     train = pd.read_csv("../../data/train_4-26.csv")
     test = pd.read_csv("../../data/test_4-26.csv")
     train, test = feature_engineering(train, test)
-
-
-
-
-    # train.to_csv('../../data/train_4-26.csv', index=False)
-    # test.to_csv('../../data/test_4-26.csv', index=False)
+    train.to_csv('../../data/train_4-28.csv', index=False)
+    test.to_csv('../../data/test_4-28.csv', index=False)
 
 def feature_engineering(train, test):
     feature_names = ['delta_imp_aport_var13_1y3',
@@ -36,6 +32,8 @@ def feature_engineering(train, test):
             df[feature_name] = np.where((df[feature_name] != 0)&(df[feature_name] != -1)&(df[feature_name] != 9999999999),
                                None, df[feature_name])
             df[feature_name].replace(to_replace=9999999999, value=1, inplace=True)
+    train.dropna(inplace=True)
+
 
     features_to_drop = ['delta_num_aport_var13_1y3', # because highly correlation with other columns
                         'delta_num_aport_var17_1y3', # because highly correlation with other columns

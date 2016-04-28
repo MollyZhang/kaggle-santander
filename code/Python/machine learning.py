@@ -21,7 +21,7 @@ CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
                }
 
 def main():
-    df = pd.read_csv("../../data/train_4-26.csv")
+    df = pd.read_csv("../../data/train_4-28.csv")
     data, label = data_label_split(df)
 
     data = scaling(data)
