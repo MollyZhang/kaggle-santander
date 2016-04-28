@@ -74,7 +74,9 @@ def feature_engineering(train, test):
                         'num_trasp_var17_in_ult1', # almost no variance, highly correlated
                         'num_trasp_var33_in_hace3', #almost no variance, highly correlated
                         'num_trasp_var33_in_ult1', #almost no variance, highly correlated
-
+                        'num_var40_0', # highly corelated
+                        'saldo_medio_var29_hace2', #almost no variance
+                        'saldo_medio_var29_hace3', #almost no variance
                         ]
     for feature_name in features_to_drop:
         for df in [train, test]:
@@ -228,26 +230,91 @@ def feature_engineering(train, test):
                            'num_var31_0',
                            'num_var33_0',
                            'num_var33',
-                           'num_var313_0',
+                           'num_var33_0',
                            'num_var35',
                            'num_var37_0',
                            'num_var37_med_ult2',
                            'num_var39_0',
                            'num_var4',
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                           'num_var41_0',
+                           'num_var42', #nice
+                           'num_var42_0',
+                           'num_var43_emit_ult1',
+                           'num_var43_recib_ult1',
+                           'num_var44_0',
+                           'num_var45_hace2',
+                           'num_var45_hace3',
+                           'num_var45_ult1',
+                           'num_var45_ult3',
+                           'num_var5', # intereting, seem to be redundant of ind_var5
+                           'num_var5_0',
+                           'num_var7_recib_ult1',
+                           'num_var8_0',
+                           'num_venta_var44_hace3',
+                           'saldo_medio_var12_hace2',
+                           'saldo_medio_var12_hace3',
+                           'saldo_medio_var12_ult1',
+                           'saldo_medio_var12_ult3',
+                           'saldo_medio_var13_corto_hace2',
+                           'saldo_medio_var13_corto_hace3',
+                           'saldo_medio_var13_corto_ult1',
+                           'saldo_medio_var13_corto_ult3',
+                           'saldo_medio_var13_largo_hace2',
+                           'saldo_medio_var13_largo_hace3',
+                           'saldo_medio_var13_largo_ult1',
+                           'saldo_medio_var13_largo_ult3',
+                           'saldo_medio_var13_medio_hace2',
+                           'saldo_medio_var13_medio_hace2',
+                           'saldo_medio_var17_hace2',
+                           'saldo_medio_var17_hace3',
+                           'saldo_medio_var17_ult1',
+                           'saldo_medio_var17_ult3',
+                           'saldo_medio_var29_ult1',
+                           'saldo_medio_var29_ult3',
+                           'saldo_medio_var33_hace2', # real values
+                           'saldo_medio_var33_hace3', # real values
+                           'saldo_medio_var33_ult1',
+                           'saldo_medio_var33_ult3',
+                           'saldo_medio_var44_hace2',
+                           'saldo_medio_var44_hace3', # real values
+                           'saldo_medio_var44_ult1',
+                           'saldo_medio_var44_ult1',
+                           'saldo_medio_var5_hace2', # interesting
+                           'saldo_medio_var5_hace3', # interesting
+                           'saldo_medio_var5_ult1',
+                           'saldo_medio_var5_ult3',
+                           'saldo_medio_var8_hace2',
+                           'saldo_medio_var8_hace3',
+                           'saldo_medio_var8_ult1',
+                           'saldo_medio_var8_ult1',
+                           'saldo_var1',
+                           'saldo_var12',
+                           'saldo_var13',
+                           'saldo_var13_corto',
+                           'saldo_var13_largo',
+                           'saldo_var13_medio',
+                           'saldo_var14',
+                           'saldo_var17',
+                           'saldo_var20',
+                           'saldo_var25',
+                           'saldo_var26',
+                           'saldo_var30',
+                           'saldo_var31',
+                           'saldo_var32',
+                           'saldo_var33',
+                           'saldo_var34',
+                           'saldo_var37',
+                           'saldo_var40',
+                           'saldo_var42',
+                           'saldo_var44',
+                           'saldo_var5',
+                           'saldo_var6',
+                           'saldo_var8',
+                           'var15', # very nice
+                           'var21',
+                           'var3',
+                           'var36',
+                           'var38'
                            ]
 
 
