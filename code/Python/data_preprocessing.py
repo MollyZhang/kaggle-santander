@@ -46,12 +46,129 @@ def feature_engineering(train, test):
                         'saldo_var18', # because almost no variance
                         'imp_amort_var34_ult1', # because almost no variance
                         'saldo_var34', # because almost no variance
+                        'imp_aport_var33_ult1', # because almost no variance
+                        'imp_op_var39_efect_ult1', # because highly correlation with other columns
+                        'imp_op_var39_efect_ult3', # because highly correlation with other columns
+                        'imp_op_var39_ult1', # because highly correlation with other columns
+                        'imp_op_var41_comer_ult1', # highly correlated
+                        'imp_op_var41_comer_ult3', # higly correlated
+                        'imp_reemb_var17_hace3', # almost no variance
+                        'imp_trasp_var17_in_hace3', #almost no variance
+                        'imp_trasp_var17_in_ult1', #almost no variance
+                        'imp_trasp_var17_out_ult1', #almost no varaince
+                        'imp_trasp_var33_in_hace3', #almost no variance
+                        'imp_trasp_var33_in_ult1', #almost no variance
+                        'imp_var7_emit_ult1', #almost no variance
+                        'imp_venta_var44_hace3', #almost no variance
+                        'ind_var13_medio_0', #almost no variance
+                        'ind_var18_0', #almost no variance
+                        'ind_var34_0', #almost no variance
+                        'ind_var40', # high correlation
+                        'ind_var40_0', # high correlation
+                        'ind_var6', # almost no variance
+                        'ind_var6_0', # almost no variance
+                        'ind_var7_emit_ult1', # almost no variance
+                        'num_meses_var29_ult3', #almost no variance
+
                         ]
     for feature_name in features_to_drop:
         for df in [train, test]:
             df.drop(feature_name, axis=1, inplace=True)
 
 
+    features_left_alone = ['imp_aport_var13_hace3', # amount for contribution 3 ago
+                           'imp_aport_var13_ult1',
+                           'imp_aport_var17_hace3',
+                           'imp_aport_var17_ult1',
+                           'imp_aport_var33_hace3',
+                           'imp_compra_var44_hace3',
+                           'imp_compra_var44_ult1',
+                           'imp_ent_var16_ult1',
+                           'imp_op_var39_comer_ult1',
+                           'imp_op_var39_comer_ult3',
+                           'imp_op_var40_comer_ult1',
+                           'imp_op_var40_comer_ult3',
+                           'imp_op_var40_efect_ult1', # thess two really similar
+                           'imp_op_var40_efect_ult3', # these two really similar
+                           'imp_op_var40_ult1',
+                           'imp_op_var41_efect_ult1',
+                           'imp_op_var41_efect_ult3',
+                           'imp_op_var41_ult1',
+                           'imp_reemb_var13_ult1', # mostly zeros
+                           'imp_reemb_var17_ult1', # mostly zeros
+                           'imp_sal_var16_ult1',
+                           'imp_trans_var37_ult1',
+                           'imp_var43_emit_ult1',
+                           'imp_var7_recib_ult1',
+                           'imp_venta_var44_ult1',
+                           'ind_var1', # kinda nice feature
+                           'ind_var10_ult1', # kinda nice
+                           'ind_var10cte_ult1', # kinda nice
+                           'ind_var12', # nice
+                           'ind_var12_0', # nice
+                           'ind_var13', #nice
+                           'ind_var13_0', #nice
+                           'ind_var13_corto',
+                           'ind_var13_corto_0',
+                           'ind_var13_largo',
+                           'ind_var13_largo_0',
+                           'ind_var14',
+                           'ind_var14_0'
+                           'ind_var17',
+                           'ind_var17_0',
+                           'ind_var19',
+                           'ind_var1_0',
+                           'ind_var20',
+                           'ind_var20_0',
+                           'ind_var24',
+                           'ind_var24_0',
+                           'ind_var25_0',
+                           'ind_var25_cte',
+                           'ind_var26_0',
+                           'ind_var26_cte',
+                           'ind_var30', # nice
+                           'ind_var31',
+                           'ind_var31_0',
+                           'ind_var32_0',
+                           'ind_var32_cte',
+                           'ind_var33',
+                           'ind_var33_0',
+                           'ind_var37_0',
+                           'ind_var37_cte',
+                           'ind_var39_0', #nice
+                           'ind_var41_0',
+                           'ind_var43_emit_ult1', #nice
+                           'ind_var43_recib_ult1', #nice
+                           'ind_var44',
+                           'ind_var44_0',
+                           'ind_var5', # nice
+                           'ind_var5_0', # nice
+                           'ind_var7_recib_ult1',
+                           'ind_var8',
+                           'ind_var8_0',
+                           'ind_var9_cte_ult1',
+                           'ind_var9_ult1',
+                           'num_aport_var13_hace3', #nice
+                           'num_aport_var13_ult1',
+                           'num_aport_var17_hace3',
+                           'num_aport_var17_ult1',
+                           'num_aport_var33_hace3',
+                           'num_aport_var33_ult1', #mostly zeros
+                           'num_compra_var44_hace3',
+                           'num_compra_var44_ult1',
+                           'num_ent_var16_ult1',
+                           'num_med_var22_ult3',
+                           'num_med_var45_ult3', #nice
+                           'num_meses_var12_ult3',
+                           'num_meses_var13_corto_ult3',
+                           'num_meses_var13_largo_ult3',
+                           'num_meses_var17_ult3',
+
+
+
+
+
+                           ]
 
 
     return train, test
