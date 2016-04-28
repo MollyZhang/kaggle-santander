@@ -1,11 +1,9 @@
 import pandas as pd
 import numpy as np
 
-x = pd.DataFrame(data=range(20), columns = ["hey"])
+# df = pd.read_csv("../../data/train_4-28.csv")
+# test = pd.read_csv("../../data/test_4-28.csv")
 
-
-x['hey'] = np.where((x['hey'] > 10) & (x['hey'] < 15), 1, x['hey'])
-print x
-
-
+# print list(df.columns)
+print range(10) == range(10)
 

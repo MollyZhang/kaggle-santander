@@ -22,17 +22,18 @@ CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
 
 def main():
     df = pd.read_csv("../../data/train_4-28.csv")
+    test = pd.read_csv("../../data/test_4-28.csv")
     data, label = data_label_split(df)
 
     data = scaling(data)
 
     # x_train, x_test, y_train, y_test = cross_validation.train_test_split(
     #     data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
-    learning_curve(CLASSIFIERS, data, label)
+    #learning_curve(CLASSIFIERS, data, label)
 
     # result = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
     # print result
-    #generate_submission(data, label)
+    generate_submission(data, label, test)
 
 
 def scaling(data_in):
@@ -108,11 +109,16 @@ def cut_off_threshhold(clf, x_train, y_train):
     # print max(threshhold_result['validation auc'])
     return result_df
 
-def generate_submission(data, label):
+def generate_submission(data, label, test):
+
+
     clf = CLASSIFIERS['xgboost']
-    df_test = pd.read_csv("../../data/test_4-26.csv")
-    df_test_no_id = df_test.drop('ID', axis=1)
+    df_test_no_id = test.drop('ID', axis=1)
+
     clf.fit(data, label, eval_metric='auc')
+    train_predict = clf.predict_proba(data)[:,1]
+    train_auc = metrics.roc_auc_score(label, train_predict)
+
     prediction = clf.predict_proba(df_test_no_id)[:,1]
     for i in range(len(prediction)):
         if prediction[i] < 0:
@@ -120,8 +126,8 @@ def generate_submission(data, label):
         if prediction[i] > 1:
             prediction[i] = 1
     df_submit = pd.DataFrame()
-    df_submit['ID'] = df_test['ID']
-    df_submit['TARGET'] = pd.Series(prediction, index=df_test.index)
+    df_submit['ID'] = test['ID']
+    df_submit['TARGET'] = pd.Series(prediction, index=test.index)
     time = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M")
     df_submit.to_csv("../../result/submission_{0}.csv".format(time), index=False)
 

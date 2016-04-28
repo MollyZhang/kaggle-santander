@@ -30,10 +30,8 @@ def feature_engineering(train, test):
     for feature_name in feature_names:
         for df in [train, test]:
             df[feature_name] = np.where((df[feature_name] != 0)&(df[feature_name] != -1)&(df[feature_name] != 9999999999),
-                               None, df[feature_name])
+                               2, df[feature_name])
             df[feature_name].replace(to_replace=9999999999, value=1, inplace=True)
-    train.dropna(inplace=True)
-
 
     features_to_drop = ['delta_num_aport_var13_1y3', # because highly correlation with other columns
                         'delta_num_aport_var17_1y3', # because highly correlation with other columns
