@@ -28,7 +28,10 @@ sample train       val
 4-28
 remove a lot more features with almost no variance or highly correlated with others
 now total number of features 247
-learning curve now, interesly, with less sample, the classifier performs better
+learning curve now, interestly, with less sample, the classifier performs better, however, the
+overall performance of model is not improved :(
+
+
           train       val
 1000   0.949341  0.802144
 6000   0.895919  0.821986
