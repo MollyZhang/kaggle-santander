@@ -14,14 +14,34 @@ CLASSIFIERS = {"xgboost": xgb.XGBClassifier(n_estimators=50)}
 
 
 def main():
+    pass
+
+
+
+
+def experiment_4_26():
+    ### seperate all variables into those containing var1, var2, ..var 46
+    ### do seperate PCA in each variable group, comparing with PCA for all
+    ### conclusion: confirmed linkage within variable names, however, PCA is not the answer
+
+
+    df = {"train": pd.read_csv("../../data/train_4-26.csv"),
+          "test": pd.read_csv("../../data/test_4-26.csv")}
+    label = df["train"]["TARGET"]
+    data = df["train"].drop("TARGET", axis=1)
     var_dict = extract_variable()
-    df_dict, target_df, test_id_df = seprate_df_by_variable(var_dict)
+    df_dict, target_df, test_id_df = seprate_df_by_variable(var_dict, df)
     df_dict = PCA_analysis_per_variable(df_dict)
     df_all, target_all = PCA_analysis_all()
+    print "no PCA"
+    print ml.nfold_cross_validation(data, label, CLASSIFIERS)
     print "PCA per varialbe"
-    ml.learning_curve(CLASSIFIERS, df_dict['train'], target_df)
+    print ml.nfold_cross_validation(df_dict['train'], target_df, CLASSIFIERS)
     print "PCA all"
-    ml.learning_curve(CLASSIFIERS, df_all, target_all)
+    print ml.nfold_cross_validation(df_all, target_all, CLASSIFIERS)
+
+
+
 
 
 def PCA_analysis_per_variable(df_dict):
@@ -47,15 +67,13 @@ def PCA_analysis_all():
     df.drop('TARGET', axis=1, inplace=True)
     scaler = sklearn.preprocessing.StandardScaler()
     X = scaler.fit_transform(df)
-    pca = sklearn.decomposition.PCA(n_components=0.99)
+    pca = sklearn.decomposition.PCA(n_components=0.999)
     return pd.DataFrame(data=pca.fit_transform(X)), df_target
 
 
 
 
-def seprate_df_by_variable(var_dict):
-    df = {"train": pd.read_csv("../../data/train_4-26.csv"),
-          "test": pd.read_csv("../../data/test_4-26.csv")}
+def seprate_df_by_variable(var_dict, df):
     df_dict = {}
     for key in var_dict.keys():
         df_dict[key] = {"train": pd.DataFrame(), "test": pd.DataFrame()}

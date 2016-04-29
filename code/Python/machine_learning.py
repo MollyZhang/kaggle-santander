@@ -43,10 +43,10 @@ def scaling(data_in):
     return data_out
 
 
-def tenfold_cross_validation(x_train, y_train, classifiers):
+def nfold_cross_validation(x_train, y_train, classifiers):
     result_df = pd.DataFrame()
     foldnum = 0
-    for train, val in cross_validation.StratifiedKFold(y_train, shuffle=True, n_folds=1, random_state=0):
+    for train, val in cross_validation.StratifiedKFold(y_train, shuffle=True, n_folds=5, random_state=0):
         foldnum += 1
         print "fold %d...." %foldnum
         [tr_data, val_data, tr_targets, val_targets] = folds_to_split(x_train, y_train, train, val)
@@ -60,9 +60,9 @@ def tenfold_cross_validation(x_train, y_train, classifiers):
             auc_val = metrics.roc_auc_score(val_targets, predictions_val)
             result_df.loc[foldnum, "clf={0} train".format(clf_name)] = auc_train
             result_df.loc[foldnum, "clf={0} val".format(clf_name)] = auc_val
-    return result_df
+    return result_df.mean()
 
-def learning_curve(classifiers, data, label):
+def learning_curve(data, label, classifiers):
     x_tr, x_val, y_tr, y_val = cross_validation.train_test_split(
         data, label, test_size=0.2, train_size=0.8, random_state=20160426, stratify=label)
     num_samples = x_tr.shape[0]

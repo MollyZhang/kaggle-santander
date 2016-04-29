@@ -46,6 +46,17 @@ overall performance of model is not improved :(
 51000  0.843732  0.831374
 56000  0.842595  0.831304
 
+4-29
+comparing no PCA, PCA per variable, and PCA of all (retaining 0.999 variance)
+no PCA------------------------------------------
+clf=xgboost train    0.843980
+clf=xgboost val      0.833714
+PCA per variable--------------------------------
+clf=xgboost train    0.843363
+clf=xgboost val      0.831659
+PCA all-----------------------------------------
+clf=xgboost train    0.836296
+clf=xgboost val      0.816565
 
 
 
