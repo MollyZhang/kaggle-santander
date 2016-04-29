@@ -17,22 +17,22 @@ CLASSIFIERS = {#"LR": linear_model.LogisticRegression(),
                #"rbf SVM": svm.SVC(kernel="rbf"),
                # "linear SVM": SVM.SVC(kernel="linear"),
                #"KNN": neighbors.KNeighborsClassifier(),
-               "xgboost": xgb.XGBClassifier(n_estimators=50),
+               "xgboost": xgb.XGBClassifier(n_estimators=100),
                }
 
 def main():
-    df = pd.read_csv("../../data/train_4-28.csv")
-    test = pd.read_csv("../../data/test_4-28.csv")
+    df = pd.read_csv("../../data/train.csv")
+    test = pd.read_csv("../../data/test.csv")
     data, label = data_label_split(df)
 
 
     ##x_train, x_test, y_train, y_test = cross_validation.train_test_split(
     #    data, label, test_size=0.2, train_size=0.8, random_state=0, stratify=label)
-    #learning_curve(CLASSIFIERS, data, label)
+    learning_curve(CLASSIFIERS, data, label)
 
     #result = tenfold_cross_validation(x_train, y_train, CLASSIFIERS)
     #print result
-    generate_submission(data, label, test)
+    #generate_submission(data, label, test)
 
 
 def scaling(data_in):

@@ -77,8 +77,6 @@ def feature_engineering(train, test):
     for feature_name in features_to_drop:
         for df in [train, test]:
             df.drop(feature_name, axis=1, inplace=True)
-
-
     features_left_alone = ['imp_aport_var13_hace3', # amount for contribution 3 ago
                            'imp_aport_var13_ult1',
                            'imp_aport_var17_hace3',
@@ -339,28 +337,7 @@ def remove_linearly_dependent_features(train, test):
     test.drop(remove, axis=1, inplace=True)
     return train, test
 
-def PCA_analysis(train, test):
-    variance_ratio_threshhold = 0.99
-    pca = PCA()
-    X = train.drop("TARGET", axis=1)
-    # feature normalization
-    pca.fit(X)
-    components = pca.components_
-    component_ratio = pca.explained_variance_ratio_
-    accumulated_ratio = [sum(component_ratio[:i+1]) for i in range(len(component_ratio))]
-    number_of_features_to_keep = 0
-    for i in range(len(components)):
-        if accumulated_ratio[i] <= variance_ratio_threshhold:
-            number_of_features_to_keep += 1
-    print number_of_features_to_keep
 
-    pca = PCA(n_components=number_of_features_to_keep)
-    X_new = pca.fit_transform(X)
-    new_train = pd.DataFrame(data=X_new,
-                             index=range(X_new.shape[0]),
-                             columns=X.columns)
-    new_train['TARGET'] = train['TARGET']
-    return new_train
 
 
 def remove_0_variant_features(train, test):
