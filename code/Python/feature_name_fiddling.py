@@ -20,17 +20,17 @@ def main():
 
 def PCA_analysis(df_dict):
     new_df_dict = {"train": pd.DataFrame(), "test": pd.DataFrame()}
-    for data_type in ["train", "test"]:
-        for var_name, sub_df in df_dict[data_type].iteritems():
-            scaler = sklearn.preprocessing.StandardScaler()
-            X = scaler.fit_transform(sub_df)
-            num_features = sub_df.shape[1]
-            pca = sklearn.decomposition.PCA(n_components=0.999)
-            X_new = pd.DataFrame(data=pca.fit_transform(X))
-            accumulated_ratio = pca.explained_variance_ratio_.cumsum()
-            new_df_dict[data_type] = pd.concat([new_df_dict[data_type], X_new], axis="col")
-            print len(new_df_dict[data_type].columns)
-
+    for var_name, sub_df in df_dict.iteritems():
+        scaler = sklearn.preprocessing.StandardScaler()
+        X_train = scaler.fit_transform(sub_df["train"])
+        X_test = scaler.fit_transform(sub_df["test"])
+        pca = sklearn.decomposition.PCA(n_components=0.999)
+        pca.fit(X_train)
+        X_train_new = pd.DataFrame(data=pca.transform(X_train))
+        X_test_new = pd.DataFrame(data=pca.transform(X_test))
+        accumulated_ratio = pca.explained_variance_ratio_.cumsum()
+        new_df_dict["train"] = pd.concat([new_df_dict["train"], X_train_new], axis="col")
+        new_df_dict["test"] = pd.concat([new_df_dict["test"], X_test_new], axis="col")
     return new_df_dict
 
 
@@ -38,12 +38,14 @@ def PCA_analysis(df_dict):
 def seprate_df_by_variable(var_dict):
     df = {"train": pd.read_csv("../../data/train_4-26.csv"),
           "test": pd.read_csv("../../data/test_4-26.csv")}
-    df_dict = {"train": {}, "test": {}}
+    df_dict = {}
+    for key in var_dict.keys():
+        df_dict[key] = {"train": pd.DataFrame(), "test": pd.DataFrame()}
     target_df = df["train"]['TARGET']
     test_id_df = df["test"]['ID']
-    for data_type in ["train", "test"]:
-        for var_name, column_names in var_dict.iteritems():
-            df_dict[data_type][var_name] = df[data_type][column_names]
+    for var_name, column_names in var_dict.iteritems():
+        for data_type in ["train", "test"]:
+            df_dict[var_name][data_type] = df[data_type][column_names]
     return df_dict, target_df, test_id_df
 
 

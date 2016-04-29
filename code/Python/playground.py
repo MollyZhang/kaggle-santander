@@ -5,4 +5,4 @@ import sklearn.preprocessing
 
 df = pd.read_csv("../../data/train.csv")
 
-print pd.concat([df, pd.DataFrame()], axis=1)
+print pd.concat([df, pd.DataFrame()])
